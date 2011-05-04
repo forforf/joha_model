@@ -15,9 +15,12 @@ class JohaModel
                   :links => :key_list_ops,
                   :parents => :list_ops,
                   :notes => :list_ops,
-                  :history => :list_ops}
+                  :history => :list_ops,
+                  #no operations are performed on user data
+                  :user_data => :static_ops}  
 
-  attr_reader :tinkit_class, :grapher, :graphs
+  attr_reader :tinkit_class, :jsgrapher, :digraphs, :joha_data
+  attr_accessor :current_digraph
 
   #ToDo: BaseClass that can support old Bufs Model and new Joha Model
   #Bufs Model should be backwards compatible
@@ -28,6 +31,8 @@ class JohaModel
     #parents_field = data_field_defs[:parents_field] || :parents
     @key_field = :id
     @parents_field = :parents
+    @attachments_field = :attachments
+    @user_data_field = :user_data
     #TODO, need to fix formatter to accept custom field ops
     joha_env = TinkitNodeFactory.env_formatter("couchrest",
                                                tinkit_class_name,
@@ -53,9 +58,11 @@ class JohaModel
 
     #finds relationships between nodes
     tinkit_kins = Kinkit.new(burped_tinkits, @parents_field)
-    @graphs = tinkit_kins.uniq_digraphs
+    @digraphs = tinkit_kins.uniq_digraphs
+    @current_digraph = nil
     #parent child relationship data  #adds field :children
     joha_relationships = tinkit_kins.parent_child_maps
+    @joha_data = joha_relationships
 
     joha_relationship_structure = {:id => @key_field, 
                                   :name_key => :label,
@@ -63,12 +70,35 @@ class JohaModel
 
      #p full_data.methods
 
-    @grapher = JsivtGrapher.new(joha_relationships, joha_relationship_structure)
+    @jsgrapher = JsivtGrapher.new(joha_relationships, joha_relationship_structure)
   end
 
+  def find_digraph_with_node(node_id)
+    #nodes must unique across all digraphs in a domain
+    @digraphs.each do |digraph|
+      return digraph if digraph.vertices.include? node_id
+    end
+  end
+
+  def set_current_digraph(node_id)
+     @current_digraph = find_digraph_with_node(node_id)
+  end
+
+  def find_all_descendant_data(node_id, field)
+    graph = @current_digraph || find_digraph_with_node(node_id)
+    desc_graph = graph.bfs_search_tree_from(node_id)
+    p desc_graph
+    desc_data = {}
+    desc_graph.vertices.each do |sub_node_id|
+      sub_node = @joha_data[sub_node_id]
+      desc_data[sub_node_id] = sub_node[field]
+    end
+    return {field => desc_data}
+  end
+  
   def tree_graph(top_node, depth=4)
     #check if node exists?
-    @grapher.to_tree(top_node, depth)
+    @jsgrapher.to_tree(top_node, depth)
   end
   
   #TODO Move to forforf_rgl_adjacency
@@ -80,15 +110,23 @@ class JohaModel
   #which graph to browse, and since each node
   #is unique, the graph can be selected using that
   #top node.
-  def graphs_with_roots
+  def digraphs_with_roots
     graphs_with_roots = {}
     #sort_graphs = @graphs.sort {|a,b| a.size <=> b.size }
-    @graphs.each do |graph|
+    @digraphs.each do |graph|
       best_top_nodes = graph.best_top_vertices
       best_top_node = best_top_nodes.min{ |n1,n2| graph.in_degree(n1) <=> graph.in_degree(n2) }
       graphs_with_roots[best_top_node] = graph
     end
     return graphs_with_roots
+  end
+
+  #Former borg.ify
+  #based on node, find all sub nodes (rgl.vertices)
+  #based on field return all equal sub node fields
+  #{node_id => {field_name => field_data}}
+  def descendant_data(top_node_id, field_name)
+    
   end
 
   #Method maps (TODO: I'm sure there's a better way)
@@ -98,14 +136,31 @@ class JohaModel
     #TODO: What if params includes attachments?
   end
 
+  #this is a bit dangerous as it can screw up the expected data structure
+  #if the params passed in don't conform to the original data structure
   def update_node(params)
     node = @tinkit_class.get(params[@key_field])
     raise "No node to update for #{@key_field} => #{params[@key_field]}."\
           "Maybe you wanted to create a new node instead?" unless node
     #TODO: What if params includes attachments?
+    
+    joha_fields = JohaDataDefn.keys
+    param_keys = params.keys
+    param_keys.delete(@key_field)
+    param_keys.each do |key|
+      next unless joha_fields.include? key
+      new_data = params[key]
+      node._user_data[key] = new_data
+      param_keys.delete(key)
+    end
+    
 
-    #for joha fields, use <field>_add method
-    #for all other fields, put them in user_data
+    if param_keys.size > 0
+      node_user_data[@user_data_field] ||= {}
+      param_keys.each do |key|
+        node._user_data[@user_data_field][key] = params[key]
+      end
+    end   
   end
 
   def select_node(id)
@@ -122,6 +177,7 @@ class JohaModel
     node.get_raw_data(att_name)
   end
 
+  #private
   def list_attachments(id)
     node = @tinkit_class.get(id)
     node.attached_files
