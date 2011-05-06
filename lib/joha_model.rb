@@ -77,9 +77,6 @@ class JohaModel
     #nodes must unique across all digraphs in a domain
     ret_digraph = nil
     @digraphs.each do |digraph|
-      puts "Searching for #{node_id} in:"
-      p digraph.inspect
-      puts "----"
       if digraph.vertices.include? node_id
         ret_digraph = digraph
         break
@@ -93,6 +90,7 @@ class JohaModel
   end
 
   def find_all_descendant_data(node_id, field)
+    field = field.to_sym
     graph = @current_digraph || find_digraph_with_node(node_id)
     desc_graph = graph.bfs_search_tree_from(node_id)
     #p desc_graph
