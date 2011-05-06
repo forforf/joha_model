@@ -87,7 +87,7 @@ class JohaModel
   def find_all_descendant_data(node_id, field)
     graph = @current_digraph || find_digraph_with_node(node_id)
     desc_graph = graph.bfs_search_tree_from(node_id)
-    p desc_graph
+    #p desc_graph
     desc_data = {}
     desc_graph.vertices.each do |sub_node_id|
       sub_node = @joha_data[sub_node_id]

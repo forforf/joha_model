@@ -1,0 +1,82 @@
+GIT
+  remote: git://github.com/forforf/burp
+  revision: 9b6113a45012b4f1532d19f9f344bd8abcbf55f3
+  specs:
+    burp (0.1.1)
+
+GIT
+  remote: git://github.com/forforf/jsivt_grapher
+  revision: 9d34f5fbc3939a5138ed1a8e3ce9cbecf7bc8a1a
+  specs:
+    jsivt_grapher (0.1.0)
+      json (~> 1.5.1)
+
+GIT
+  remote: git://github.com/forforf/kinkit
+  revision: c2b6f4d2607356f4bd42e02221c9fa5fab830e79
+  specs:
+    kinkit (0.1.1)
+      forforf-rgl
+
+GIT
+  remote: git://github.com/forforf/tinkit
+  revision: 4934cc6884f1e13910136ee5e156cb728a02d62e
+  specs:
+    tinkit (0.0.6)
+      couchrest (~> 1.0.2)
+      couchrest_extended_document (~> 1.0.0)
+      log4r (~> 1.1.9)
+      mime-types (~> 1.16)
+      rest-client (~> 1.6.1)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    activesupport (3.0.7)
+    builder (3.0.0)
+    couchrest (1.0.2)
+      json (~> 1.5.1)
+      mime-types (~> 1.15)
+      rest-client (~> 1.6.1)
+    couchrest_extended_document (1.0.0)
+      activesupport (>= 2.3.0)
+      builder (>= 2.1.2)
+      couchrest (>= 1.0.0)
+      mime-types (>= 1.15)
+    diff-lcs (1.1.2)
+    forforf-rgl (0.5.0)
+      stream (>= 0.5)
+    git (1.2.5)
+    jeweler (1.5.2)
+      bundler (~> 1.0.0)
+      git (>= 1.2.5)
+      rake
+    json (1.5.1)
+    log4r (1.1.9)
+    mime-types (1.16)
+    rake (0.8.7)
+    rcov (0.9.9)
+    rest-client (1.6.1)
+      mime-types (>= 1.16)
+    rspec (2.3.0)
+      rspec-core (~> 2.3.0)
+      rspec-expectations (~> 2.3.0)
+      rspec-mocks (~> 2.3.0)
+    rspec-core (2.3.1)
+    rspec-expectations (2.3.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.3.0)
+    stream (0.5)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler (~> 1.0.0)
+  burp!
+  jeweler (~> 1.5.2)
+  jsivt_grapher!
+  kinkit!
+  rcov
+  rspec (~> 2.3.0)
+  tinkit!

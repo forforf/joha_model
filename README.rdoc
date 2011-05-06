@@ -1,6 +1,6 @@
 = joha_model
 
-Description goes here.
+Specific library for building joha services
 
 == Contributing to joha_model
  

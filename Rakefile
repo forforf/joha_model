@@ -14,14 +14,19 @@ Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "joha_model"
   gem.homepage = "http://github.com/forforf/joha_model"
-  gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.license = "TBD"
+  gem.summary = %Q{Web model interface for all joha actions}
+  gem.description = %Q{Hooks up to a web framework as a model and front-ends all the associated libraries needed to run the joha service}
   gem.email = "dmarti21@gmail.com"
   gem.authors = ["Dave M"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
   # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
-  #  gem.add_runtime_dependency 'jabber4r', '> 0.1'
+    gem.add_runtime_dependency 'couchrest', '~> 1.0'
+    gem.add_runtime_dependency 'couchrest_extended_document', '~> 1.0' #working to remove this dependency
+    #gem.add_runtime_dependency 'tinkit', :git => "git://github.com/forforf/kinkit"
+    #gem.add_runtime_dependency 'kinkit', :git => "git://github.com/forforf/kinkit"
+    #gem.add_runtime_dependency 'burp', :git => "git://github.com/forforf/burp"
+    #gem.add_runtime_dependency 'jsivt_grapher', :git => "git://github.com/forforf/jsivt_grapher"
   #  gem.add_development_dependency 'rspec', '> 1.2.3'
 end
 Jeweler::RubygemsDotOrgTasks.new
