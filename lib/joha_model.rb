@@ -75,9 +75,17 @@ class JohaModel
 
   def find_digraph_with_node(node_id)
     #nodes must unique across all digraphs in a domain
+    ret_digraph = nil
     @digraphs.each do |digraph|
-      return digraph if digraph.vertices.include? node_id
+      puts "Searching for #{node_id} in:"
+      p digraph.inspect
+      puts "----"
+      if digraph.vertices.include? node_id
+        ret_digraph = digraph
+        break
+      end
     end
+    ret_digraph
   end
 
   def set_current_digraph(node_id)
