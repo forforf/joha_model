@@ -19,7 +19,7 @@ class JohaModel
                   #no operations are performed on user data
                   :user_data => :static_ops}  
 
-  attr_reader :tinkit_class, :jsgrapher, :digraphs, :joha_data
+  attr_reader :tinkit_class, :jsgrapher, :digraphs, :joha_data, :node_list
   attr_accessor :current_digraph
 
   #ToDo: BaseClass that can support old Bufs Model and new Joha Model
@@ -58,6 +58,9 @@ class JohaModel
 
     #finds relationships between nodes
     tinkit_kins = Kinkit.new(burped_tinkits, @parents_field)
+
+    @node_list = tinkit_kins
+
     @digraphs = tinkit_kins.uniq_digraphs
     @current_digraph = nil
     #parent child relationship data  #adds field :children
@@ -139,6 +142,7 @@ class JohaModel
   def create_node(params)
     node = @tinkit_class.new(params)
     node.__save
+    node
     #TODO: What if params includes attachments?
   end
 
