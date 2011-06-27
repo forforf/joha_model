@@ -16,10 +16,9 @@ class JohaModel
                   :parents => :list_ops,
                   :notes => :list_ops,
                   :history => :list_ops,
-                  #no operations are performed on user data
-                  :user_data => :static_ops}  
+                  :user_data => :key_list_ops}  
 
-  attr_reader :tinkit_class, :jsgrapher, :digraphs, :joha_data, :node_list
+  attr_reader :tinkit_class, :jsgrapher, :digraphs, :joha_data, :node_list #, :orphans
   attr_accessor :current_digraph
 
   #ToDo: BaseClass that can support old Bufs Model and new Joha Model
@@ -62,6 +61,8 @@ class JohaModel
     @node_list = tinkit_kins
 
     @digraphs = tinkit_kins.uniq_digraphs
+    #@orphans = tinkit_kins.orphans
+    
     @current_digraph = nil
     #parent child relationship data  #adds field :children
     joha_relationships = tinkit_kins.parent_child_maps
@@ -95,6 +96,7 @@ class JohaModel
   def find_all_descendant_data(node_id, field)
     field = field.to_sym
     graph = @current_digraph || find_digraph_with_node(node_id)
+    raise "No graph found for node id: #{node_id.inspect}" unless graph
     desc_graph = graph.bfs_search_tree_from(node_id)
     #p desc_graph
     desc_data = {}
@@ -109,6 +111,38 @@ class JohaModel
     #check if node exists?
     @jsgrapher.to_tree(top_node, depth)
   end
+  
+    #TODO: DRY up init now that refresh exists
+  def refresh
+     all_joha_tinkits = @tinkit_class.all
+
+    #I've given up on native tinkit class into burp for now
+    all_joha_node_data = all_joha_tinkits.map{|node| node._user_data}
+
+    #transforms an array of hashes to a hash with key field
+    #pointing to hashed data of node
+    burped_tinkits = Burp.new(all_joha_node_data, @key_field)
+
+    #finds relationships between nodes
+    tinkit_kins = Kinkit.new(burped_tinkits, @parents_field)
+
+    @node_list = tinkit_kins
+
+    @digraphs = tinkit_kins.uniq_digraphs
+    @current_digraph = nil
+    #parent child relationship data  #adds field :children
+    joha_relationships = tinkit_kins.parent_child_maps
+    @joha_data = joha_relationships
+
+    joha_relationship_structure = {:id => @key_field,
+                                  :name_key => :label,
+                                  :children =>:children }
+
+     #p full_data.methods
+
+    @jsgrapher = JsivtGrapher.new(joha_relationships, joha_relationship_structure)
+  end
+
   
   #TODO Move to forforf_rgl_adjacency
   #list unique graphs with a guess
@@ -127,6 +161,9 @@ class JohaModel
       best_top_node = best_top_nodes.min{ |n1,n2| graph.in_degree(n1) <=> graph.in_degree(n2) }
       graphs_with_roots[best_top_node] = graph
     end
+    #@orphans.each do |ok, od|
+    #  graphs_with_roots[ok] = [{ok => od}]
+    #end
     return graphs_with_roots
   end
 
@@ -226,6 +263,11 @@ class JohaModel
     add_command = "#{param}_add".to_sym
     node = @tinkit_class.get(id)
     node.__send__(add_command, item_ids)
+  end
+  
+  def replace_item(id, param, old_item_ids, new_item_ids)
+    remove_item(id, param, old_item_ids)
+    add_item(id, param, new_item_ids)
   end
 
 end
