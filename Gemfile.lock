@@ -1,12 +1,12 @@
 GIT
-  remote: git://github.com/forforf/burp
+  remote: git://github.com/forforf/burp.git
   revision: 030d41d49570a2128a7d07d33f690a6b4d31ed6f
   branch: dev
   specs:
     burp (0.1.1)
 
 GIT
-  remote: git://github.com/forforf/jsivt_grapher
+  remote: git://github.com/forforf/jsivt_grapher.git
   revision: 7b4cf95e3cb55666a82b04fc79483061cacf8e70
   branch: dev
   specs:
@@ -14,7 +14,7 @@ GIT
       json (~> 1.5.1)
 
 GIT
-  remote: git://github.com/forforf/kinkit
+  remote: git://github.com/forforf/kinkit.git
   revision: a0ec186296149e6fb60b41b490b1773c46fc017d
   branch: dev
   specs:
@@ -22,7 +22,7 @@ GIT
       rgl (~> 0.4.0)
 
 GIT
-  remote: git://github.com/forforf/tinkit
+  remote: git://github.com/forforf/tinkit.git
   revision: 4934cc6884f1e13910136ee5e156cb728a02d62e
   branch: dev
   specs:

@@ -7,10 +7,10 @@ source "http://rubygems.org"
 # Include everything needed to run rake, tests, features, etc.
   group :development do
     #development versions of main libraries
-    gem 'tinkit', :git => "git://github.com/forforf/tinkit", :branch => "dev"
-    gem 'kinkit', :git => "git://github.com/forforf/kinkit", :branch => "dev"
-    gem 'burp', :git => "git://github.com/forforf/burp", :branch => "dev"
-    gem 'jsivt_grapher', :git => "git://github.com/forforf/jsivt_grapher", :branch => "dev"
+    gem 'tinkit', :git => "git://github.com/forforf/tinkit.git", :branch => "dev"
+    gem 'kinkit', :git => "git://github.com/forforf/kinkit.git", :branch => "dev"
+    gem 'burp', :git => "git://github.com/forforf/burp.git", :branch => "dev"
+    gem 'jsivt_grapher', :git => "git://github.com/forforf/jsivt_grapher.git", :branch => "dev"
 
     #others
     gem "rspec", "~> 2.3.0"
