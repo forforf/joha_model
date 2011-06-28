@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email       = ["dmarti21@gmail.com"]
   s.homepage    = "http://www.joha.us"
   s.summary     = %q{Model for the joha app}
-  s.description = %q{TODO}
+  s.description = %q{Model for the joha app}
   s.add_runtime_dependency(%q{tinkit})
   s.add_runtime_dependency(%q{kinkit})
   s.add_runtime_dependency(%q{burp})
