@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
-require "joha_model/version"
+$:.push File.expand_path("../lib/", __FILE__)
+require "joha_model"
 
 Gem::Specification.new do |s|
   s.name        = "joha_model"
-  s.version     = JohaModel::VERSION
+  s.version     = "0.0.1" #JohaModel::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["David Martin"]
   s.email       = ["dmarti21@gmail.com"]

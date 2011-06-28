@@ -5,6 +5,7 @@ require 'kinkit'
 require 'jsivt_grapher'
 
 class JohaModel
+  VERSION = "0.0.1"
   #rename this when going to test or production
   #TODO: create config to do the renaming
   CouchDB = CouchRest.database!("http://127.0.0.1:5984/joha_test_data/")

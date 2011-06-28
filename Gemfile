@@ -2,10 +2,10 @@ source "http://rubygems.org"
 # Add dependencies required to use your gem here.
 # Example:
 #   gem "activesupport", ">= 2.3.5"
-
+gem 'xml-simple', :require => 'xmlsimple'
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.
-  group :development do
+#  group :development do
     #development versions of main libraries
     gem 'tinkit', :git => "git@github.com:/forforf/tinkit.git", :branch => "dev"
     gem 'kinkit', :git => "git@github.com:/forforf/kinkit.git", :branch => "dev"
@@ -17,8 +17,9 @@ source "http://rubygems.org"
     gem "bundler", "~> 1.0.0"
     gem "jeweler", "~> 1.5.2"
     gem "rcov", ">= 0"
-  end
+#  end
 
   group :production do
    #tbd
   end
+
