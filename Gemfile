@@ -14,6 +14,7 @@ gemspec
     gem 'jsivt_grapher', :git => "git@github.com:/forforf/jsivt_grapher.git", :branch => "dev"
 
     #others
+    gem "i18n"
     gem "rspec", "~> 2.3.0"
     gem "bundler", "~> 1.0.0"
     gem "jeweler", "~> 1.5.2"
