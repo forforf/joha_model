@@ -7,6 +7,7 @@ gem 'xml-simple', :require => 'xmlsimple'
 # Include everything needed to run rake, tests, features, etc.
 #  group :development do
     #development versions of main libraries
+gemspec
     gem 'tinkit', :git => "git@github.com:/forforf/tinkit.git", :branch => "dev"
     gem 'kinkit', :git => "git@github.com:/forforf/kinkit.git", :branch => "dev"
     gem 'burp', :git => "git@github.com:/forforf/burp.git", :branch => "dev"

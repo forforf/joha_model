@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib/", __FILE__)
-require "joha_model"
+#require "joha_model"
 
 Gem::Specification.new do |s|
   s.name        = "joha_model"
@@ -11,10 +11,10 @@ Gem::Specification.new do |s|
   s.homepage    = "http://www.joha.us"
   s.summary     = %q{Model for the joha app}
   s.description = %q{Model for the joha app}
-  s.add_runtime_dependency(%q{tinkit})
-  s.add_runtime_dependency(%q{kinkit})
-  s.add_runtime_dependency(%q{burp})
-  s.add_runtime_dependency(%q{jsivt_grapher})
+  #s.add_runtime_dependency(%q{tinkit})
+  #s.add_runtime_dependency(%q{kinkit})
+  #s.add_runtime_dependency(%q{burp})
+  #s.add_runtime_dependency(%q{jsivt_grapher})
 
   s.rubyforge_project = "joha_model"
 
