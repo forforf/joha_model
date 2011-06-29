@@ -15,7 +15,7 @@ gemspec
 
 gem 'tinkit', :git => "git@github.com:/forforf/tinkit.git", :branch => "bundler_test"
 gem 'kinkit', :git => "git@github.com:/forforf/kinkit.git", :branch => "bundler_test"
-gem 'burp', :git => "git@github.com:/forforf/burp.git", :branch => "bunlder_test"
+gem 'burp', :git => "git@github.com:/forforf/burp.git", :branch => "bundler_test"
 gem 'jsivt_grapher', :git => "git@github.com:/forforf/jsivt_grapher.git", :branch => "bundler_test"
 
     #others
