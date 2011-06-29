@@ -8,10 +8,15 @@ gem 'xml-simple', :require => 'xmlsimple'
 #  group :development do
     #development versions of main libraries
 gemspec
-    gem 'tinkit', :git => "git@github.com:/forforf/tinkit.git", :branch => "dev"
-    gem 'kinkit', :git => "git@github.com:/forforf/kinkit.git", :branch => "dev"
-    gem 'burp', :git => "git@github.com:/forforf/burp.git", :branch => "dev"
-    gem 'jsivt_grapher', :git => "git@github.com:/forforf/jsivt_grapher.git", :branch => "dev"
+    #gem 'tinkit', :git => "git@github.com:/forforf/tinkit.git", :branch => "dev"
+    #gem 'kinkit', :git => "git@github.com:/forforf/kinkit.git", :branch => "dev"
+    #gem 'burp', :git => "git@github.com:/forforf/burp.git", :branch => "dev"
+    #gem 'jsivt_grapher', :git => "git@github.com:/forforf/jsivt_grapher.git", :branch => "dev"
+
+gem 'tinkit', :git => "git@github.com:/forforf/tinkit.git", :branch => "bundler_test"
+gem 'kinkit', :git => "git@github.com:/forforf/kinkit.git", :branch => "bundler_test"
+gem 'burp', :git => "git@github.com:/forforf/burp.git", :branch => "bunlder_test"
+gem 'jsivt_grapher', :git => "git@github.com:/forforf/jsivt_grapher.git", :branch => "bundler_test"
 
     #others
     gem "i18n"
