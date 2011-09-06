@@ -10,14 +10,17 @@ class JohaModel
   #TODO: create config to do the renaming
   CouchDB = CouchRest.database!("http://127.0.0.1:5984/joha_test_data/")
   #data operations are defined in tinkit/node_element/operations
-  JohaDataDefn = {:id => :static_ops,
+  #ToDo: Reconcile the App data definitions with the Model data definitions
+  #For example, :links => :link_data for the app, but :key_list_ops for model
+  #also app supports nexted and arbitrary complex data types, but not the model
+  JohaModelDataDefn = {:id => :static_ops,
                   :label => :replace_ops,
                   :description => :replace_ops,
                   :links => :key_list_ops,
                   :parents => :list_ops,
                   :notes => :list_ops,
                   :history => :list_ops,
-                  :user_data => :key_list_ops}  
+                  :user_data => :key_list_ops}   
 
   attr_reader :tinkit_class, :jsgrapher, :digraphs, :joha_data, :node_list #, :orphans
   attr_accessor :current_digraph
@@ -41,7 +44,7 @@ class JohaModel
                                                CouchDB.host)
 
     #hack until formatter is fixed
-    joha_env[:data_model][:field_op_set] = JohaDataDefn
+    joha_env[:data_model][:field_op_set] = JohaModelDataDefn
 
     @tinkit_class = TinkitNodeFactory.make(joha_env)
     
@@ -96,6 +99,7 @@ class JohaModel
 
   def find_all_descendant_data(node_id, field)
     field = field.to_sym
+    refresh
     graph = @current_digraph || find_digraph_with_node(node_id)
     raise "No graph found for node id: #{node_id.inspect}" unless graph
     desc_graph = graph.bfs_search_tree_from(node_id)
@@ -192,7 +196,7 @@ class JohaModel
           "Maybe you wanted to create a new node instead?" unless node
     #TODO: What if params includes attachments?
     
-    joha_fields = JohaDataDefn.keys
+    joha_fields = JohaDataModelDefn.keys
     param_keys = params.keys
     param_keys.delete(@key_field)
     param_keys.each do |key|
