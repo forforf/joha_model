@@ -6,13 +6,14 @@ require 'jsivt_grapher'
 
 class JohaModel
   VERSION = "0.0.1"
-  #rename this when going to test or production
-  #TODO: create config to do the renaming
-  CouchDB = CouchRest.database!("http://127.0.0.1:5984/joha_test_data/")
+  CouchDB_BaseUrl = "http://127.0.0.1:5984/"
+  CouchDB_Prefix = "joha_model_"
+  #CouchDB = CouchRest.database!("http://127.0.0.1:5984/joha_test_data/")
+  
   #data operations are defined in tinkit/node_element/operations
   #ToDo: Reconcile the App data definitions with the Model data definitions
   #For example, :links => :link_data for the app, but :key_list_ops for model
-  #also app supports nexted and arbitrary complex data types, but not the model
+  #also app supports nested and arbitrarily complex data types, but not the model
   JohaModelDataDefn = {:id => :static_ops,
                   :label => :replace_ops,
                   :description => :replace_ops,
@@ -23,15 +24,25 @@ class JohaModel
                   :user_data => :key_list_ops}   
 
   attr_reader :tinkit_class, :jsgrapher, :digraphs, :joha_data, :node_list #, :orphans
-  attr_accessor :current_digraph
+  attr_accessor :current_digraph, :model_name
 
   #ToDo: BaseClass that can support old Bufs Model and new Joha Model
   #Bufs Model should be backwards compatible
   #Joha Model should be able to be drop and replace
   #Though won't work with Bufs formatted persistent storage
-  def initialize(tinkit_class_name, user_id)#, data_field_defs = {})
-    #key_field = data_field_defs[:key_field] || :id  #maybe my_category?
-    #parents_field = data_field_defs[:parents_field] || :parents
+  
+  #Security ToDo: Have to ensure that the user is authenticated.
+  #Current thought. Have security module that has an authentication function
+  #and authorization function, with components calling back to it at critical
+  #points. One critical point is this one where the user is bound to their datastore
+  def initialize(model_name, tinkit_class_name, user_datastore_id, tinkit_id)
+    #ToDo: validate user_datastore_id is proper format for datastores (no illegal characters)
+    #Data Store is on a per user basis, with each user able to have multiple tinkit classes
+    #within their store
+    #CouchDB Data Store
+    @model_name = model_name
+    datastore_id = CouchDB_Prefix + user_datastore_id
+    @user_db = CouchRest.database!(CouchDB_BaseUrl + datastore_id)
     @key_field = :id
     @parents_field = :parents
     @attachments_field = :attachments
@@ -39,9 +50,9 @@ class JohaModel
     #TODO, need to fix formatter to accept custom field ops
     joha_env = TinkitNodeFactory.env_formatter("couchrest",
                                                tinkit_class_name,
-                                               user_id,
-                                               CouchDB.uri,
-                                               CouchDB.host)
+                                               tinkit_id,
+                                               @user_db.uri,
+                                               @user_db.host)
 
     #hack until formatter is fixed
     joha_env[:data_model][:field_op_set] = JohaModelDataDefn
