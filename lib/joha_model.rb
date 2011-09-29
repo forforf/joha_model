@@ -23,7 +23,7 @@ class JohaModel
                   :history => :list_ops,
                   :user_data => :key_list_ops}   
 
-  attr_reader :tinkit_class, :jsgrapher, :digraphs, :joha_data, :node_list #, :orphans
+  attr_reader :tinkit_class, :jsgrapher, :digraphs, :joha_data, :node_list, :orphans
   attr_accessor :current_digraph, :model_name
 
   #ToDo: BaseClass that can support old Bufs Model and new Joha Model
@@ -76,7 +76,7 @@ class JohaModel
     @node_list = tinkit_kins
 
     @digraphs = tinkit_kins.uniq_digraphs
-    #@orphans = tinkit_kins.orphans
+    @orphans = tinkit_kins.orphans
     
     @current_digraph = nil
     #parent child relationship data  #adds field :children
@@ -143,7 +143,8 @@ class JohaModel
     tinkit_kins = Kinkit.new(burped_tinkits, @parents_field)
 
     @node_list = tinkit_kins
-
+    @orphans = tinkit_kins.orphans
+    
     @digraphs = tinkit_kins.uniq_digraphs
     @current_digraph = nil
     #parent child relationship data  #adds field :children
@@ -232,7 +233,7 @@ class JohaModel
 
   def destroy_node(id)
     node = @tinkit_class.get(id)
-    node.__destroy_node
+    node.__destroy_node if node
   end
 
   def download_attachment(node_id, att_name)
